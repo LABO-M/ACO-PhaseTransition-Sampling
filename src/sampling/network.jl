@@ -61,14 +61,3 @@ function network_lattice(T::Int, r::Int)
 
     return k_out
 end
-
-# パラメータの設定
-T = 100
-r = 3
-w = 0.0
-
-# ネットワークモデルの実行
-k_out_result = network(T, r, w)
-
-# 結果の表示
-println(k_out_result)

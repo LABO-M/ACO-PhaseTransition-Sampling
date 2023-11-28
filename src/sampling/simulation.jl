@@ -1,6 +1,7 @@
 module Simulation
 
 using Random, ProgressMeter
+include("network.jl")
 
 const DEFAULT_EPSILON = 0.01  # Define epsilon as a constant at the top of the code
 
@@ -93,6 +94,36 @@ function simulate_ants(N::Int, T::Int, t0::Int, alpha::Float64, tau::Int)
     time_range = 1:(t0 + T)
     Z = S[time_range] ./ discount_factor(collect(time_range), tau, N)
     return Z
+end
+
+function simulate_networked_ants(N::Int, T::Int, t0::Int, alpha::Float64, tau::Int, w::Float64)
+    X = zeros(Int, N)
+    Sj = zeros(Float64, N)
+    S = zeros(Float64, T + t0)
+
+    # network_popularity関数からk_out配列を取得
+    k_out = network_popularity(N, tau, w)
+
+    # Initialization
+    initialize_simulation(N, X, S, Sj, t0)
+
+    for t in (t0 + 1):(t0 + T)
+        Zj = Sj ./ S[t-1]
+        prob = decision_function(Zj, alpha, DEFAULT_EPSILON)
+        X .= rand(Float64, N) .< prob
+        TP = sum(X)
+        S[t] += S[t-1] * TP * k_out
+        Sj .+= X .* TP * k_out
+    end
+
+    Z = S ./ (tau * N)
+
+    return Z
+
+end
+
+function decision_function(Zj::Vector{Float64}, alpha::Float64, epsilon::Float64)::Vector{Float64}
+    return (1 - epsilon) * ((Zj.^alpha) ./ (Zj.^alpha .+ (1 .- Zj).^alpha)) .+ 0.5 * epsilon
 end
 
 end

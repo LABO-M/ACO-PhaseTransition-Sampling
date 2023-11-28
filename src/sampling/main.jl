@@ -26,6 +26,10 @@ function main(args)
         help = "Time scale of the pheromone evaporation. Use '-1' for infinite tau."
         default = 100
         arg_type = Int
+        "--omega"
+        help = "Weight parameter omega"
+        default = 0.0
+        arg_type = Float64
     end
 
     parsed_args = parse_args(args, s)
@@ -34,25 +38,26 @@ function main(args)
     t0 = parsed_args["t0"]
     alpha = parsed_args["alpha"]
     tau = parsed_args["tau"]
+    omega = parsed_args["omega"]
 
     # Log the simulation parameters
     tau_str = (tau == -1) ? "inf" : int_to_SI_prefix(tau)
     println("Running simulation with the following parameters:")
-    println("N = $(int_to_SI_prefix(N)), T = $(int_to_SI_prefix(T)), t0 = $(int_to_SI_prefix(t0)), alpha = $(alpha), tau = $(tau_str)")
+    println("N = $(int_to_SI_prefix(N)), T = $(int_to_SI_prefix(T)), t0 = $(int_to_SI_prefix(t0)), alpha = $(alpha), tau = $(tau_str), omega = $(omega)")
 
     # Run the simulation
     if tau == -1
         Z = Simulation.simulate_ants(N, T, t0, alpha)
     else
-        Z = Simulation.simulate_ants(N, T, t0, alpha, tau)
+        Z = Simulation.simulate_networked_ants(N, T, t0, alpha, tau, omega)
     end
 
     # Output Z values to CSV
-    dir_Z = "data/Zt"
+    dir_Z = "data/Zt_network"
     if !isdir(dir_Z)
         mkpath(dir_Z)
     end
-    filename_Z = joinpath(dir_Z, "N$(int_to_SI_prefix(N))_T$(int_to_SI_prefix(T))_t0$(int_to_SI_prefix(t0))_alpha$(alpha)_tau$(tau_str).csv")
+    filename_Z = joinpath(dir_Z, "N$(int_to_SI_prefix(N))_T$(int_to_SI_prefix(T))_t0$(int_to_SI_prefix(t0))_alpha$(alpha)_tau$(tau_str)_omega$(omega).csv")
     save_Z_to_csv(Z, filename_Z)
     end
 

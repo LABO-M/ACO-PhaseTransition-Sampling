@@ -1,7 +1,7 @@
 using CSV, DataFrames
 
 # Convert the numeric value to a string format with K, M, G, etc.
-function format_num(value::Int)
+function int_to_SI_prefix(value::Int)
     if value % 1_000_000_000 == 0
         return string(value ÷ 1_000_000_000) * "G"
     elseif value % 1_000_000 == 0
@@ -10,6 +10,19 @@ function format_num(value::Int)
         return string(value ÷ 1_000) * "K"
     else
         return string(value)
+    end
+end
+
+# Convert the string format with K, M, G, etc. to a numeric value
+function SI_prefix_to_int(s::String)
+    if endswith(s, "G")
+        return parse(Int, chop(s)) * 1_000_000_000
+    elseif endswith(s, "M")
+        return parse(Int, chop(s)) * 1_000_000
+    elseif endswith(s, "K")
+        return parse(Int, chop(s)) * 1_000
+    else
+        return parse(Int, s)
     end
 end
 

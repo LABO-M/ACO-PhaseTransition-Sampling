@@ -33,11 +33,11 @@ $$
 - 出次数の総和は以下のように表される。
 
 $$
- \sum_{i=1}^{t} k^{OUT}_i(t) =
-  \begin{cases}
-  \frac{1}{2}r(r + 1) + (t - (r + 1))r = {r(t - (r + 1)/2)} & t \geq r + 1 \\
-  \frac{1}{2}t(t - 1) & t \leq r + 1
-  \end{cases}
+\sum_{i=1}^{t} k^{OUT}_i(t) =
+\begin{cases}
+\frac{1}{2}r(r + 1) + (t - (r + 1))r = {r(t - (r + 1)/2)} & t \geq r + 1 \\
+\frac{1}{2}t(t - 1) & t \leq r + 1
+\end{cases}
 $$
 
 $$
@@ -59,11 +59,11 @@ $$
 - $\Delta k^{OUT}_i(t)$ は $k^{OUT}_i(t + 1) - k^{OUT}_i(t)$ であり、 $\{0, 1\}$ のいずれかの値を取る。
 
 $$
- \sum_{i=1}^{t} \Delta k^{OUT}_i(t) = \sum_{i=1}^{t} (k^{OUT}_i(t + 1) - k^{OUT}_i(t)) =
-  \begin{cases}
-  r & t \geq r, \omega \geq -1 \\
-  t & 1 \leq t \leq r
-  \end{cases}
+\sum_{i=1}^{t} \Delta k^{OUT}_i(t) = \sum_{i=1}^{t} (k^{OUT}_i(t + 1) - k^{OUT}_i(t)) =
+\begin{cases}
+r & t \geq r, \omega \geq -1 \\
+t & 1 \leq t \leq r
+\end{cases}
 $$
 
 $$
